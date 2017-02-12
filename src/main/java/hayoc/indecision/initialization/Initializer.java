@@ -1,14 +1,10 @@
 package hayoc.indecision.initialization;
 
-import hayoc.indecision.decision.data.DataUpdate;
 import hayoc.indecision.features.Features;
 import hayoc.indecision.util.PropertyReader;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import javax.inject.Inject;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
