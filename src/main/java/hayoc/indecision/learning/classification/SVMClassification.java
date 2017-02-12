@@ -1,7 +1,7 @@
 package hayoc.indecision.learning.classification;
 
 import org.apache.log4j.Logger;
-import weka.classifiers.*;
+import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.functions.LibSVM;
 import weka.core.Instance;

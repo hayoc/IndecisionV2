@@ -1,7 +1,6 @@
 package hayoc.indecision.features.environment;
 
 import hayoc.indecision.features.Feature;
-import org.apache.log4j.Logger;
 
 import java.time.LocalDateTime;
 
