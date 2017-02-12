@@ -19,8 +19,7 @@ public class Features {
     private static final Logger LOG = Logger.getLogger(Features.class);
 
     public static List<Feature> ALL;
-
-    private static Class[] LIST = {DayFeature.class, MonthFeature.class, TimeFeature.class, WeatherFeature.class};
+    public static Class[] LIST = {DayFeature.class, MonthFeature.class, TimeFeature.class, WeatherFeature.class};
 
     static {
         ALL = getAllFeatures();
