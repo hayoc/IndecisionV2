@@ -1,10 +1,9 @@
-package hayoc.indecision.decision;
+package hayoc.indecision.decision.data;
 
 import hayoc.indecision.util.PropertyReader;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -12,9 +11,9 @@ import java.nio.file.StandardOpenOption;
 /**
  * Created by Hayo on 12/02/2017.
  */
-public class DataUpdate {
+public class FileUpdate implements DataUpdate {
 
-    private static final Logger LOG = Logger.getLogger(DataUpdate.class);
+    private static final Logger LOG = Logger.getLogger(FileUpdate.class);
     private static final PropertyReader PATHS = new PropertyReader("application.properties");
 
     public void append(String user, double[] features, boolean result) {

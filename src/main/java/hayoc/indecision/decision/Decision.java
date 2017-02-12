@@ -1,5 +1,6 @@
 package hayoc.indecision.decision;
 
+import hayoc.indecision.decision.data.FileUpdate;
 import hayoc.indecision.features.Feature;
 import hayoc.indecision.features.Features;
 import hayoc.indecision.learning.classification.Classification;
@@ -9,7 +10,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import weka.classifiers.Classifier;
 import weka.core.Instances;
-import weka.core.converters.ConverterUtils;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.Normalize;
 
@@ -22,21 +22,22 @@ import java.util.Random;
 /**
  * Created by Hayo on 11/02/2017.
  */
-public class Decide {
+public class Decision {
 
-    private static final Logger LOG = Logger.getLogger(Decide.class);
+    private static final Logger LOG = Logger.getLogger(Decision.class);
     private static final PropertyReader PATHS = new PropertyReader("application.properties");
 
-    private DataUpdate dataUpdate;
+    private Classification classification;
+    private FileUpdate fileUpdate;
 
     @Inject
-    public Decide(DataUpdate dataUpdate) {
-        this.dataUpdate = dataUpdate;
+    public Decision(Classification classification, FileUpdate fileUpdate) {
+        this.classification = classification;
+        this.fileUpdate = fileUpdate;
     }
 
     public String decide(List<String> options, String user) {
-        Instances data = null;
-        data = getUserData(user);
+        Instances data = getUserData(user);
         data = prepareData(data, user);
         if (data == null) return StringUtils.EMPTY;
 
@@ -47,7 +48,6 @@ public class Decide {
         Instances train = new Instances(data, 0, trainSize);
         Instances test = new Instances(data, trainSize, testSize);
 
-        Classification classification = new SVMClassification();
         Classifier classifier = classification.build(train, test);
 
         String decision = StringUtils.EMPTY;
@@ -70,7 +70,7 @@ public class Decide {
 
     public void update(List<String> options, String chosen, String user) {
         for (String option : options) {
-            dataUpdate.append(user, getFeatures(user, option), StringUtils.equals(option, chosen));
+            fileUpdate.append(user, getFeatures(user, option), StringUtils.equals(option, chosen));
         }
     }
 
@@ -89,8 +89,8 @@ public class Decide {
     }
 
     private Instances getUserData(String user) {
-        InputStream stream = getClass().getClassLoader().getResourceAsStream(PATHS.getProperty("USER_FEATURES") + PATHS.getProperty("DELIMITER") + user + PATHS.getProperty("DATA_FORMAT"));
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
+        String path = PATHS.getProperty("USER_FEATURES") + PATHS.getProperty("DELIMITER") + user + PATHS.getProperty("DATA_FORMAT");
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             return new Instances(reader);
         } catch (IOException e) {
             LOG.error("Failed to read data for user: " + user);

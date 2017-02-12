@@ -1,6 +1,5 @@
 package hayoc.indecision.features;
 
-import hayoc.indecision.decision.Decide;
 import hayoc.indecision.features.environment.DayFeature;
 import hayoc.indecision.features.environment.MonthFeature;
 import hayoc.indecision.features.environment.TimeFeature;

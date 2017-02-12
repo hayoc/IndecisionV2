@@ -1,14 +1,11 @@
 package hayoc.indecision.learning.classification;
 
-import hayoc.indecision.decision.Decide;
 import org.apache.log4j.Logger;
 import weka.classifiers.*;
 import weka.classifiers.Evaluation;
 import weka.classifiers.functions.LibSVM;
 import weka.core.Instance;
 import weka.core.Instances;
-
-import java.util.Random;
 
 /**
  * Created by Hayo on 11/02/2017.
