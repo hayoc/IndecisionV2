@@ -26,11 +26,18 @@ public class Indecision {
     }
 
     private void execute() {
+        createUser("hayotest");
+        for (int i = 0; i < 10; i++) {
+            List<String> optionz = getOptions(i);
+            updateUserDataWithDecision(optionz, optionz.get(1), "hayotest");
+        }
+
         List<String> options = new ArrayList<>();
-        options.add("blah");
-        options.add("booh");
-        String chosen = decision.decide(options, "hayotest");
+        options.add("Should I get a dog, which I hate");
+        options.add("Should I get a cat, which I love");
+        String chosen = decide(options, "hayotest");
         System.out.println(chosen);
+        updateUserDataWithDecision(options, "Should I get a cat, which I love", "hayotest");
     }
 
     public String decide(List<String> options, String user) {

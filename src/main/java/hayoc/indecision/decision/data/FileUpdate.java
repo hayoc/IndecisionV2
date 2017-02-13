@@ -3,6 +3,7 @@ package hayoc.indecision.decision.data;
 import hayoc.indecision.util.PropertyReader;
 import org.apache.log4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -23,9 +24,9 @@ public class FileUpdate implements DataUpdate {
             sb.append(",");
         }
         sb.append(String.valueOf(result));
-
+        sb.append("\n");
         try {
-            String path = PATHS.getProperty("USER_FEATURES") + PATHS.getProperty("DELIMITER") + user + PATHS.getProperty("DATA_FORMAT");
+            String path = PATHS.getProperty("USER_FEATURES") + File.separator + user + PATHS.getProperty("DATA_FORMAT");
             Files.write(Paths.get(path), sb.toString().getBytes(), StandardOpenOption.APPEND);
         } catch (IOException e) {
             LOG.error("Failed to append chosen option to user data file.");

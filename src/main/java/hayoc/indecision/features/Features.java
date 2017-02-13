@@ -1,5 +1,6 @@
 package hayoc.indecision.features;
 
+import hayoc.indecision.features.category.CategoryFeature;
 import hayoc.indecision.features.environment.DayFeature;
 import hayoc.indecision.features.environment.MonthFeature;
 import hayoc.indecision.features.environment.TimeFeature;
@@ -19,7 +20,7 @@ public class Features {
     private static final Logger LOG = Logger.getLogger(Features.class);
 
     public static List<Feature> ALL;
-    public static Class[] LIST = {DayFeature.class, MonthFeature.class, TimeFeature.class, WeatherFeature.class};
+    public static Class[] LIST = {DayFeature.class, MonthFeature.class, TimeFeature.class, WeatherFeature.class, CategoryFeature.class};
 
     static {
         ALL = getAllFeatures();

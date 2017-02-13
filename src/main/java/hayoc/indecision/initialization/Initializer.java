@@ -4,6 +4,7 @@ import hayoc.indecision.features.Features;
 import hayoc.indecision.util.PropertyReader;
 import org.apache.log4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
@@ -26,8 +27,8 @@ public class Initializer {
 
     public boolean createUser(String user) {
         try {
-            String path = PATHS.getProperty("USER_FEATURES") + PATHS.getProperty("DELIMITER") + user + PATHS.getProperty("DATA_FORMAT");
-            Files.write(Paths.get(path), defaultContent(), StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+            String path = PATHS.getProperty("USER_FEATURES") + File.separator + user + PATHS.getProperty("DATA_FORMAT");
+            Files.write(Paths.get(path), defaultContent(), StandardCharsets.UTF_8);
             return true;
         } catch (IOException e) {
             LOG.error("Failed to create new USER: " + user);
@@ -41,7 +42,7 @@ public class Initializer {
             Path path = Paths.get(getClass().getClassLoader().getResource("initialization/decisions.txt").toURI());
             List<String> options = Files.readAllLines(path, Charset.defaultCharset());
             if (index * 2 >= options.size()) return Collections.emptyList();
-            return options.subList(index * 2, (index * 2) + 1);
+            return options.subList(index * 2, (index * 2) + 2);
         } catch (IOException | URISyntaxException e) {
             LOG.error("Could not find 'decisions.txt' to initialize.");
             return Collections.emptyList();
@@ -55,6 +56,7 @@ public class Initializer {
             lines.add("@ATTRIBUTE " + clazz.getSimpleName() +  "\t\t NUMERIC");
         }
         lines.add("@ATTRIBUTE decision\t\t{true,false}");
+        lines.add("\n@DATA\n");
         return lines;
     }
 }

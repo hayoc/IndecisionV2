@@ -3,6 +3,7 @@ package hayoc.indecision.decision;
 import hayoc.indecision.decision.data.FileUpdate;
 import hayoc.indecision.features.Feature;
 import hayoc.indecision.features.Features;
+import hayoc.indecision.features.category.CategoryFeature;
 import hayoc.indecision.learning.classification.Classification;
 import hayoc.indecision.learning.classification.SVMClassification;
 import hayoc.indecision.util.PropertyReader;
@@ -15,6 +16,7 @@ import weka.filters.unsupervised.attribute.Normalize;
 
 import javax.inject.Inject;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -71,8 +73,11 @@ public class Decision {
     }
 
     public void update(List<String> options, String chosen, String user) {
+        CategoryFeature categoryFeature = new CategoryFeature();
         for (String option : options) {
-            fileUpdate.append(user, getFeatures(user, option), StringUtils.equals(option, chosen));
+            boolean positive = StringUtils.equals(option, chosen);
+            categoryFeature.update(user, option, positive);
+            fileUpdate.append(user, getFeatures(user, option), positive);
         }
     }
 
@@ -85,17 +90,18 @@ public class Decision {
             filter.setInputFormat(data);
             return Filter.useFilter(data, filter);
         } catch (Exception e) {
-            LOG.error("Failed to read/prepare data for user: " + user);
+            LOG.error("Failed to prepare data for user: " + user);
             return data;
         }
     }
 
     private Instances getUserData(String user) {
-        String path = PATHS.getProperty("USER_FEATURES") + PATHS.getProperty("DELIMITER") + user + PATHS.getProperty("DATA_FORMAT");
+        String path = PATHS.getProperty("USER_FEATURES") + File.separator + user + PATHS.getProperty("DATA_FORMAT");
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             return new Instances(reader);
         } catch (IOException e) {
             LOG.error("Failed to read data for user: " + user);
+            LOG.error("User has to be initialized first.");
             return null;
         }
     }
