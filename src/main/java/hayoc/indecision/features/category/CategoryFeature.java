@@ -2,6 +2,7 @@ package hayoc.indecision.features.category;
 
 import hayoc.indecision.features.Feature;
 import hayoc.indecision.util.PropertyReader;
+import org.apache.commons.codec.binary.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -44,17 +45,15 @@ public class CategoryFeature implements Feature {
         return DEFAULT;
     }
 
-    public void update(String user, String option, boolean chosen) {
-        Set<String> model = getNgramModel(pad(option));
+    public void update(List<String> options, String chosen, String user) {
         Map<String, Set<String>> values = getAllNgramModels();
-        if (values.isEmpty()) {
-            writeNew(model, values, user, UUID.randomUUID().toString());
-        } else {
+        for (String option : options) {
+            Set<String> model = getNgramModel(pad(option));
             for (Map.Entry<String, Set<String>> entry : values.entrySet()) {
                 String key = entry.getKey();
                 Set<String> value = entry.getValue();
                 if (!Collections.disjoint(value, model)) {
-                    writeAppend(model, value, user, key, chosen);
+                    writeAppend(model, value, user, key, StringUtils.equals(option, chosen));
                 } else {
                     writeNew(model, values, user, key);
                 }
@@ -62,6 +61,17 @@ public class CategoryFeature implements Feature {
         }
 
         MODEL_VALUES = updateFiles(getUniqueNgramModels(values));
+    }
+
+    public void initialize(String user, String option, boolean chosen) {
+        Set<String> model = getNgramModel(pad(option));
+        Map<String, Set<String>> values = getAllNgramModels();
+        writeNew(model, values, user, UUID.randomUUID().toString());
+        MODEL_VALUES = getUniqueNgramModels(values);
+    }
+
+    public void finishInitialization() {
+        MODEL_VALUES.entrySet().removeIf(entry -> entry.getValue().isEmpty());
     }
 
     private void writeAppend(Set<String> model, Set<String> value, String user, String key, boolean chosen) {
@@ -85,7 +95,7 @@ public class CategoryFeature implements Feature {
     private Map<String, Set<String>> updateFiles(Map<String, Set<String>> models) {
         for (Map.Entry<String, Set<String>> entry : models.entrySet()) {
             try {
-                Files.write(Paths.get(PATHS.getProperty("USER_CATEGORIES") + File.separator + "models"), entry.getValue(), StandardCharsets.UTF_8);
+                Files.write(Paths.get(PATHS.getProperty("USER_CATEGORIES") + File.separator + "models" + File.separator + entry.getKey()), entry.getValue(), StandardCharsets.UTF_8);
             } catch (IOException e) {
                 LOG.error("Could not write NGRAM MODEL for MODEL: " + entry.getKey());
             }

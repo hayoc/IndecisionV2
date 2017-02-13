@@ -1,8 +1,10 @@
 package hayoc.indecision.setup;
 
 import hayoc.indecision.decision.Decision;
+import hayoc.indecision.features.category.CategoryFeature;
 import hayoc.indecision.initialization.Initializer;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +16,13 @@ public class Indecision {
 
     private Decision decision;
     private Initializer initializer;
+    private CategoryFeature categoryFeature;
 
     public Indecision() {
         Distributor distributor = Distributor.setup();
         decision = distributor.getDecision();
         initializer = distributor.getInitializer();
+        categoryFeature = new CategoryFeature();
     }
 
     public static void main(String[] args) {
@@ -29,8 +33,9 @@ public class Indecision {
         createUser("hayotest");
         for (int i = 0; i < 10; i++) {
             List<String> optionz = getOptions(i);
-            updateUserDataWithDecision(optionz, optionz.get(1), "hayotest");
+            initializeUpdate(optionz, optionz.get(1), "hayotest");
         }
+        initializeFinish();
 
         List<String> options = new ArrayList<>();
         options.add("Should I get a dog, which I hate");
@@ -45,7 +50,20 @@ public class Indecision {
     }
 
     public void updateUserDataWithDecision(List<String> options, String chosen, String user) {
-        decision.update(options, chosen, md5(user));
+        user = md5(user);
+        categoryFeature.update(options, chosen, user);
+        decision.update(options, chosen, user);
+    }
+
+    public void initializeUpdate(List<String> options, String chosen, String user) {
+        for (String option : options) {
+            categoryFeature.initialize(md5(user), option, StringUtils.equals(option, chosen));
+            decision.update(options, chosen, md5(user));
+        }
+    }
+
+    public void initializeFinish() {
+        categoryFeature.finishInitialization();
     }
 
     public boolean createUser(String user) {
