@@ -39,15 +39,17 @@ public class CategoryFeature implements Feature {
 
             int[] assignments = kMeans(lines.size(), prepareData(lines));
             int cluster = assignments[assignments.length - 1];
-            int trues = 0;
+            double trues = 0;
+            double clusterMembers = 0;
             for (int i = 0; i < assignments.length - 1; i++) {
                 if (cluster == assignments[i]) {
-                    if (Boolean.valueOf(lines.get(i).split("#")[1])) {
+                    clusterMembers++;
+                    if (Boolean.valueOf(lines.get(i).split("#")[1].trim())) {
                         trues++;
                     }
                 }
             }
-            return trues/assignments.length - 1;
+            return (trues/clusterMembers) * 100;
         } catch (Exception e) {
             LOG.error("Failed to cluster for user: " + user);
             e.printStackTrace();
@@ -55,9 +57,10 @@ public class CategoryFeature implements Feature {
         }
     }
 
-    public void update(String user, String option) {
+    public void update(String user, String option, boolean result) {
         try {
-            Files.write(Paths.get(PATHS.getProperty("USER_CATEGORIES") + File.separator + user), option.getBytes(), StandardOpenOption.APPEND);
+            String text = option + "\t#\t" +  String.valueOf(result) + "\n";
+            Files.write(Paths.get(PATHS.getProperty("USER_CATEGORIES") + File.separator + user), text.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
         } catch (IOException e) {
             LOG.error("Failed to update for user: " + user);
         }

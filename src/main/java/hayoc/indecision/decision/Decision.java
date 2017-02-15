@@ -73,8 +73,11 @@ public class Decision {
     }
 
     public void update(List<String> options, String chosen, String user) {
+        CategoryFeature categoryFeature = new CategoryFeature();
         for (String option : options) {
-            fileUpdate.append(user, getFeatures(user, option), StringUtils.equals(option, chosen));
+            boolean result = StringUtils.equals(option, chosen);
+            categoryFeature.update(user, option, result);
+            fileUpdate.append(user, getFeatures(user, option), result);
         }
     }
 

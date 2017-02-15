@@ -33,9 +33,8 @@ public class Indecision {
         createUser("hayotest");
         for (int i = 0; i < 10; i++) {
             List<String> optionz = getOptions(i);
-            initializeUpdate(optionz, optionz.get(1), "hayotest");
+            updateUserDataWithDecision(optionz, optionz.get(1), "hayotest");
         }
-        initializeFinish();
 
         List<String> options = new ArrayList<>();
         options.add("Should I get a dog, which I hate");
@@ -51,19 +50,7 @@ public class Indecision {
 
     public void updateUserDataWithDecision(List<String> options, String chosen, String user) {
         user = md5(user);
-        categoryFeature.update(options, chosen, user);
         decision.update(options, chosen, user);
-    }
-
-    public void initializeUpdate(List<String> options, String chosen, String user) {
-        for (String option : options) {
-            categoryFeature.initialize(md5(user), option, StringUtils.equals(option, chosen));
-            decision.update(options, chosen, md5(user));
-        }
-    }
-
-    public void initializeFinish() {
-        categoryFeature.finishInitialization();
     }
 
     public boolean createUser(String user) {
