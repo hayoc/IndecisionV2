@@ -5,6 +5,6 @@ Well fear no more! For lo and behold, Indecision comes to the rescue. Using mach
 
 #### An example implementation
 
-![alt text](http://i.imgur.com/7ZEz2rW.png "Indecision Android")
+![alt text](http://i.imgur.com/7ZEz2rWm.png "Indecision Android")
 
 
