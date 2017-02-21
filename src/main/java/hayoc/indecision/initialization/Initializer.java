@@ -12,7 +12,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -37,6 +36,11 @@ public class Initializer {
         }
     }
 
+    public boolean userExists(String user) {
+        String path = PATHS.getProperty("USER_FEATURES") + File.separator + user + PATHS.getProperty("DATA_FORMAT");
+        return Files.exists(Paths.get(path));
+    }
+
     public List<String> getOptions(int index) {
         try {
             Path path = Paths.get(getClass().getClassLoader().getResource("initialization/decisions.txt").toURI());
@@ -57,6 +61,15 @@ public class Initializer {
         }
         lines.add("@ATTRIBUTE decision\t\t{true,false}");
         lines.add("\n@DATA\n");
+
+        double[] init = new double[Features.LIST.length];
+        StringBuilder sb = new StringBuilder();
+        for (double i : init) {
+            sb.append(String.valueOf(i)).append(",");
+        }
+        sb.append("false");
+        lines.add(sb.toString());
+
         return lines;
     }
 }

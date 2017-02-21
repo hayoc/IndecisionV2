@@ -2,7 +2,6 @@ package hayoc.indecision.features.category;
 
 import hayoc.indecision.features.Feature;
 import hayoc.indecision.util.PropertyReader;
-import org.apache.commons.codec.binary.StringUtils;
 import org.apache.log4j.Logger;
 import weka.clusterers.SimpleKMeans;
 import weka.core.Instances;
@@ -18,9 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.*;
-import java.util.regex.Pattern;
-import java.util.stream.Stream;
+import java.util.List;
 
 /**
  * Created by Hayo on 12/02/2017.
@@ -33,8 +30,9 @@ public class CategoryFeature implements Feature {
     @Override
     public double getValue(String user, String option) {
         try {
-            String path = PATHS.getProperty("USER_CATEGORIES") + File.separator + user;
-            List<String> lines = Files.readAllLines(Paths.get(path));
+            Path path = Paths.get(PATHS.getProperty("USER_CATEGORIES") + File.separator + user);
+            if (Files.notExists(path)) return 0.0;
+            List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
             lines.add(option);
 
             int[] assignments = kMeans(lines.size(), prepareData(lines));

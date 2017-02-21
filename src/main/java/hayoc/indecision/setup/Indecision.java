@@ -4,7 +4,6 @@ import hayoc.indecision.decision.Decision;
 import hayoc.indecision.features.category.CategoryFeature;
 import hayoc.indecision.initialization.Initializer;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +15,11 @@ public class Indecision {
 
     private Decision decision;
     private Initializer initializer;
-    private CategoryFeature categoryFeature;
 
     public Indecision() {
         Distributor distributor = Distributor.setup();
         decision = distributor.getDecision();
         initializer = distributor.getInitializer();
-        categoryFeature = new CategoryFeature();
     }
 
     public static void main(String[] args) {
@@ -30,7 +27,7 @@ public class Indecision {
     }
 
     private void execute() {
-        createUser("hayotest");
+        createUser("hayoc");
         for (int i = 0; i < 10; i++) {
             List<String> optionz = getOptions(i);
             updateUserDataWithDecision(optionz, optionz.get(1), "hayotest");
@@ -55,6 +52,10 @@ public class Indecision {
 
     public boolean createUser(String user) {
         return initializer.createUser(md5(user));
+    }
+
+    public boolean userExists(String user) {
+        return initializer.userExists(user);
     }
 
     public List<String> getOptions(int index) {

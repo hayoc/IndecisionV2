@@ -60,7 +60,7 @@ public class Decision {
         for (String option : options) {
             double score = classification.classify(classifier, train, getFeatures(user, option));
 
-            if (score > highest) {
+            if (score >= highest) {
                 if (highest != 0.0 && score == highest) {
                     LOG.warn("Found options with equal score");
                 }
@@ -69,7 +69,7 @@ public class Decision {
             }
         }
 
-        return (highest == 0.0) ? StringUtils.EMPTY : decision;
+        return decision;
     }
 
     public void update(List<String> options, String chosen, String user) {
