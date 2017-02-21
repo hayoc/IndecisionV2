@@ -2,6 +2,7 @@ package hayoc.indecision.features.category;
 
 import hayoc.indecision.features.Feature;
 import hayoc.indecision.util.PropertyReader;
+import hayoc.indecision.util.Reader;
 import org.apache.log4j.Logger;
 import weka.clusterers.SimpleKMeans;
 import weka.core.Instances;
@@ -25,7 +26,7 @@ import java.util.List;
 public class CategoryFeature implements Feature {
 
     private static final Logger LOG = Logger.getLogger(CategoryFeature.class);
-    private static final PropertyReader PATHS = new PropertyReader("application.properties");
+    private static Reader PATHS = new PropertyReader("application.properties");
 
     @Override
     public double getValue(String user, String option) {
@@ -91,5 +92,13 @@ public class CategoryFeature implements Feature {
             sb.append("'").append(line.split("#")[0].trim()).append("'\n");
         }
         return sb.toString();
+    }
+
+    public static Reader getPATHS() {
+        return PATHS;
+    }
+
+    public static void setPATHS(Reader PATHS) {
+        CategoryFeature.PATHS = PATHS;
     }
 }

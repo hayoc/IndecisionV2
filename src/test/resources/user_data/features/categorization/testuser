@@ -1,0 +1,16 @@
+should i get a dog      #       false
+should i get a cat      #       true
+should I get a dog      #       false
+should I get a cat      #       true
+should I get a dog      #       false
+should I get a cat      #       true
+should i get a dog      #       false
+should I get a cat      #       true
+should i play a game now        #       true
+should i continue working on my development     #       false
+should i go to sleep    #       false
+should i keep working   #       true
+should i keep working   #       true
+should I go to sleep    #       false
+should i buy this game  #       false
+should i save my money  #       true
