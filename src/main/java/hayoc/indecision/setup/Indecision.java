@@ -27,7 +27,7 @@ public class Indecision {
     }
 
     private void execute() {
-        createUser("hayoc");
+        createUser("hayotest");
         for (int i = 0; i < 10; i++) {
             List<String> optionz = getOptions(i);
             updateUserDataWithDecision(optionz, optionz.get(1), "hayotest");

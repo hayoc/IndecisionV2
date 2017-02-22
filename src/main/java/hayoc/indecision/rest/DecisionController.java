@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Created by Hayo on 19/02/2017.
  */
-@SuppressWarnings("SpringJavaAutowiringInspection")
 @RestController
 public class DecisionController {
 
@@ -24,9 +23,12 @@ public class DecisionController {
 
     @RequestMapping(value = "/newuser", method = RequestMethod.POST)
     public void newUser(@RequestBody RESTDecision decision) {
-        if (!indecision.userExists(decision.getUser())) {
-            indecision.createUser(decision.getUser());
-        }
+        indecision.createUser(decision.getUser());
+    }
+
+    @RequestMapping(value = "/resetuser", method = RequestMethod.POST)
+    public void resetUser(@RequestBody RESTDecision decision) {
+        indecision.createUser(decision.getUser());
     }
 
 

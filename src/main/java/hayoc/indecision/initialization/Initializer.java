@@ -26,8 +26,11 @@ public class Initializer {
 
     public boolean createUser(String user) {
         try {
-            String path = PATHS.getProperty("USER_FEATURES") + File.separator + user + PATHS.getProperty("DATA_FORMAT");
-            Files.write(Paths.get(path), defaultContent(), StandardCharsets.UTF_8);
+            String classificationPath = PATHS.getProperty("USER_FEATURES") + File.separator + user + PATHS.getProperty("DATA_FORMAT");
+            String categorizationPath = PATHS.getProperty("USER_CATEGORIES") + File.separator + user;
+            List<String> list = new ArrayList<>();
+            Files.write(Paths.get(classificationPath), defaultContent(), StandardCharsets.UTF_8);
+            Files.write(Paths.get(categorizationPath), list, StandardCharsets.UTF_8);
             return true;
         } catch (IOException e) {
             LOG.error("Failed to create new USER: " + user);
