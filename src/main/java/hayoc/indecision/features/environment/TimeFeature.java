@@ -13,6 +13,6 @@ public class TimeFeature implements Feature {
 
     @Override
     public double getValue(String user, String option) {
-        return ((LocalDateTime.now().getHour() * 3600) * (LocalDateTime.now().getMinute() * 60))/TIME_WEIGHT;
+        return (((LocalDateTime.now().getHour() + 1) * 3600) * ((LocalDateTime.now().getMinute() + 1) * 60))/TIME_WEIGHT;
     }
 }
