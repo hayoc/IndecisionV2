@@ -62,7 +62,8 @@ public class Decision {
 
             if (score >= highest) {
                 if (highest != 0.0 && score == highest) {
-                    LOG.warn("Found options with equal score");
+                    LOG.warn("Found options with equal score, giving random");
+                    return options.get(new Random().nextInt(options.size()));
                 }
                 highest = score;
                 decision = option;
