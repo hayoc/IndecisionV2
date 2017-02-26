@@ -36,6 +36,7 @@ public class SVMClassification implements Classification {
     @Override
     public double classify(Classifier classifier, Instances train, double[] features) {
         Instance instance = new Instance(1.0, features);
+        train.add(instance);
         instance.setDataset(train);
         try {
             return classifier.distributionForInstance(instance)[0];
